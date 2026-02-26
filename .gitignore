@@ -1,0 +1,6 @@
+# Keep secrets out
+*.pem
+*.key
+.env
+.env.*
+!.env.example

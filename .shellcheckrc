@@ -1,0 +1,6 @@
+# ShellCheck configuration — used by CI and local dev
+shell=bash
+
+# Don't follow dynamic source paths (e.g. source "$HOME/.config/bash/foo.sh")
+# These are resolved at runtime; static analysis can't follow them.
+disable=SC1090,SC1091

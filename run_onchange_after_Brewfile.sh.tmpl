@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# ─────────────────────────────────────────────────────────────────────────────
+#  run_onchange_after_Brewfile.sh — re-runs whenever Brewfile changes
+#  Checksum: {{ include "Brewfile" | sha256sum }}
+# ─────────────────────────────────────────────────────────────────────────────
+set -euo pipefail
+
+printf '\033[0;34m→ Brewfile changed — running brew bundle...\033[0m\n'
+brew bundle --file "{{ .chezmoi.sourceDir }}/Brewfile" --no-upgrade
+printf '\033[0;32m✓ brew bundle done\033[0m\n'

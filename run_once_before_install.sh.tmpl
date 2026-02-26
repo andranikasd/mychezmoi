@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# ─────────────────────────────────────────────────────────────────────────────
+#  run_once_before_install.sh — runs ONCE on first `chezmoi apply`
+#  Bootstraps a new Mac before any dotfiles are applied
+# ─────────────────────────────────────────────────────────────────────────────
+set -euo pipefail
+
+green() { printf '\033[0;32m✓ %s\033[0m\n' "$*"; }
+blue()  { printf '\033[0;34m→ %s\033[0m\n' "$*"; }
+
+# ── Homebrew ──────────────────────────────────────────────────────────────────
+if ! command -v brew &>/dev/null; then
+  blue "Installing Homebrew..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+  # Apple Silicon path
+  [[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
+  green "Homebrew installed"
+else
+  green "Homebrew already installed"
+fi
+
+# ── brew bundle ───────────────────────────────────────────────────────────────
+blue "Installing packages from Brewfile..."
+brew bundle --file "{{ .chezmoi.sourceDir }}/Brewfile" --no-upgrade
+green "Packages installed"
+
+# ── Ensure homebrew bash is a valid login shell ───────────────────────────────
+BREW_BASH="$(brew --prefix)/bin/bash"
+if ! grep -qF "$BREW_BASH" /etc/shells 2>/dev/null; then
+  blue "Adding $BREW_BASH to /etc/shells..."
+  echo "$BREW_BASH" | sudo tee -a /etc/shells
+  green "Added $BREW_BASH to /etc/shells"
+fi
+
+# ── Common directories ────────────────────────────────────────────────────────
+mkdir -p "$HOME/.config" "$HOME/.local/bin" "$HOME/.cache"
+
+# ── TPM (tmux plugin manager) ─────────────────────────────────────────────────
+if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
+  blue "Installing TPM..."
+  git clone --depth=1 https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+  green "TPM installed — open tmux and press prefix+I to install plugins"
+fi
+
+green "Bootstrap complete — run: exec bash"

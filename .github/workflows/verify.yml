@@ -1,0 +1,83 @@
+name: Verify dotfiles
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # ── ShellCheck ──────────────────────────────────────────────────────────────
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ShellCheck bash config modules
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          scandir: './dot_config/bash'
+          severity: warning
+          additional_files: 'dot_bash_profile dot_bashrc'
+
+      - name: Check run-script syntax (strip templates, validate bash)
+        run: |
+          for f in run_once_before_install.sh.tmpl run_onchange_after_Brewfile.sh.tmpl; do
+            echo "→ $f"
+            sed 's/{{[^}]*}}//g' "$f" | bash -n
+            echo "  ✓ syntax OK"
+          done
+
+  # ── Chezmoi template rendering ──────────────────────────────────────────────
+  chezmoi:
+    name: Template validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install chezmoi
+        run: |
+          sh -c "$(curl -fsLS get.chezmoi.io)"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Render all templates
+        run: |
+          mkdir -p "$HOME/.config/chezmoi"
+          printf '[data]\n  name = "CI"\n  email = "ci@example.com"\n' \
+            > "$HOME/.config/chezmoi/chezmoi.toml"
+
+          render() {
+            chezmoi --source=. execute-template < "$1" > /dev/null \
+              && echo "✓ $1"
+          }
+
+          render dot_gitconfig.tmpl
+          render run_once_before_install.sh.tmpl
+          render run_onchange_after_Brewfile.sh.tmpl
+
+  # ── Structure checks ─────────────────────────────────────────────────────────
+  structure:
+    name: Source-dir structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Required files exist
+        run: |
+          check() {
+            [ -e "$1" ] && echo "✓ $1" || { echo "✗ missing: $1"; exit 1; }
+          }
+
+          check Brewfile
+          check dot_bash_profile
+          check dot_bashrc
+          check dot_gitconfig.tmpl
+          check dot_config/bash/bashrc
+          check dot_config/bash/aliases.sh
+          check dot_config/bash/exports.sh
+          check dot_config/bash/functions.sh
+          check dot_config/bash/completion.sh
+          check dot_config/bash/prompt.sh
+          check dot_config/git/ignore
+          check dot_config/tmux/tmux.conf
+          check run_once_before_install.sh.tmpl
+          check run_onchange_after_Brewfile.sh.tmpl

@@ -1,0 +1,2 @@
+# ~/.bashrc — sources the real config managed by chezmoi
+source "$HOME/.config/bash/bashrc"

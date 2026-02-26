@@ -1,0 +1,6 @@
+# ── Ignore these inside the chezmoi source dir ────────────────────────────────
+.git
+.gitignore
+*.md
+.github
+.shellcheckrc

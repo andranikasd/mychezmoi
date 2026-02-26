@@ -1,0 +1,2 @@
+# ~/.bash_profile — login shell entry point (iTerm2, SSH)
+[[ -f "$HOME/.bashrc" ]] && source "$HOME/.bashrc"

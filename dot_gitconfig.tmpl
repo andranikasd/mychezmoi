@@ -1,0 +1,103 @@
+[user]
+	name  = {{ .name }}
+	email = {{ .email }}
+
+[include]
+	path = ~/.gitconfig.local
+
+[core]
+	autocrlf    = input
+	pager       = delta
+	excludesfile = ~/.config/git/ignore
+
+[init]
+	defaultBranch = main
+
+# ── Push / pull / fetch ───────────────────────────────────────────────────────
+[push]
+	default         = current
+	autoSetupRemote = true
+
+[pull]
+	rebase = true
+
+[rebase]
+	autoStash = true
+
+[fetch]
+	prune     = true
+	pruneTags = true
+
+# ── Merge / diff ──────────────────────────────────────────────────────────────
+[merge]
+	conflictstyle = diff3
+
+[diff]
+	colorMoved = default
+	algorithm  = histogram
+
+# ── rerere: remember conflict resolutions ─────────────────────────────────────
+[rerere]
+	enabled = true
+
+# ── Branch & tag display ──────────────────────────────────────────────────────
+[branch]
+	sort = -committerdate
+
+[tag]
+	sort = -version:refname
+
+[column]
+	ui = auto
+
+# ── delta (syntax-highlighted diffs) ─────────────────────────────────────────
+[delta]
+	navigate        = true
+	side-by-side    = true
+	line-numbers    = true
+	syntax-theme    = base16-256
+	file-style      = bold yellow ul
+	hunk-header-style = file line-number syntax
+
+[interactive]
+	diffFilter = delta --color-only
+
+# ── macOS credential store ────────────────────────────────────────────────────
+[credential]
+	helper = osxkeychain
+
+# ── Useful aliases ────────────────────────────────────────────────────────────
+[alias]
+	# Status / info
+	st   = status -sb
+	info = remote -v
+
+	# Branching
+	co   = checkout
+	sw   = switch
+	br   = branch -vv
+	bra  = branch -vva
+
+	# Diff
+	df   = diff
+	dfs  = diff --staged
+	dfw  = diff --word-diff
+
+	# Log
+	lg   = log --oneline --graph --decorate --color
+	lga  = log --oneline --graph --decorate --color --all
+	lgg  = log --graph --pretty=format:"%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(dim green)(%cr) %C(cyan)<%an>%Creset" --abbrev-commit
+
+	# Workflow
+	undo    = reset --soft HEAD~1
+	unstage = restore --staged
+	wip     = commit -am "wip: work in progress"
+	fixup   = commit --fixup
+
+	# Stash
+	ss  = stash
+	sp  = stash pop
+	sl  = stash list
+
+	# Cleanup: delete branches whose upstream is gone
+	gone = "!git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | xargs -r git branch -D"
