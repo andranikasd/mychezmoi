@@ -9,7 +9,7 @@ export LESS='-RFXi --mouse'
 export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
 export CLICOLOR=1
-export GPG_TTY=$(tty)
+GPG_TTY=$(tty); export GPG_TTY
 
 # ── PATH ──────────────────────────────────────────────────────────────────────
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"

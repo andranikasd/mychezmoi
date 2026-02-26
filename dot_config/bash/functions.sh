@@ -1,23 +1,23 @@
 # ── Directory helpers ─────────────────────────────────────────────────────────
 
 # Make dir and cd into it
-mkcd() { mkdir -p "$@" && cd "$_"; }
+mkcd() { mkdir -p "$@" && cd "$_" || return; }
 
 # cd then list
-cl() { cd "$1" && ll; }
+cl() { cd "$1" || return; ll; }
 
 # cd N levels up:  up    → ../   up 3 → ../../../
 up() {
   local n="${1:-1}" p=""
   for (( i=0; i<n; i++ )); do p="../$p"; done
-  cd "$p"
+  cd "$p" || return
 }
 
 # Open a throw-away temp directory
 scratch() {
   local d; d=$(mktemp -d)
   echo "Scratch: $d"
-  cd "$d"
+  cd "$d" || return
 }
 
 # ── File helpers ──────────────────────────────────────────────────────────────
