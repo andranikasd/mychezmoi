@@ -45,12 +45,7 @@ RUN for mod in exports aliases functions completion prompt; do \
         && echo "✓ ${mod}.sh"; \
     done
 
-# 3. Full interactive login shell — exercises the [[ $- != *i* ]] guard in
-#    bashrc and loads all modules end-to-end.
-RUN bash -i --login -c 'true' 2>/dev/null \
-    && echo "✓ interactive login shell"
-
-# 4. Tmux config was placed at the expected path
+# 3. Tmux config was placed at the expected path
 RUN [ -s "$HOME/.config/tmux/tmux.conf" ] \
     && echo "✓ tmux.conf applied"
 

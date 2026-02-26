@@ -9,6 +9,7 @@ HISTFILESIZE=500000
 HISTFILE="$HOME/.bash_history"
 HISTCONTROL=ignoreboth:erasedups
 HISTTIMEFORMAT='%F %T  '
+HISTIGNORE='ls:ll:la:cd:cd -:pwd:exit:date:* --help:* --version'
 shopt -s histappend cmdhist
 PROMPT_COMMAND='history -a'
 

@@ -67,6 +67,15 @@ gfco() {
   [[ -n "$branch" ]] && git checkout "$branch"
 }
 
+# ── SSH helpers ───────────────────────────────────────────────────────────────
+
+# Most remote servers don't have the tmux-256color terminfo entry.
+# Forcing xterm-256color prevents garbled output / "unknown terminal" errors.
+ssh()  { TERM=xterm-256color command ssh "$@"; }
+
+# SSH and immediately attach to (or create) a tmux session on the remote.
+ssht() { TERM=xterm-256color command ssh -t "$@" -- 'tmux new-session -A -s main'; }
+
 # ── Misc ──────────────────────────────────────────────────────────────────────
 
 # thefuck — lazy load so Python startup doesn't slow shell init
