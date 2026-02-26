@@ -4,7 +4,8 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 # ── Shell & terminal ──────────────────────────────────────────────────────────
-brew "bash"           # bash 5 (macOS ships 3.2)
+brew "bash"                # bash 5 (macOS ships 3.2)
+brew "bash-completion@2"  # programmable tab completion (required for git, kubectl, etc.)
 brew "tmux"
 brew "starship"       # prompt
 brew "gum"            # interactive shell UI (tab completion)

@@ -3,13 +3,36 @@
   source "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
 # ── Git completion for the 'g' alias ─────────────────────────────────────────
-for _gfn in __git_wrap__git_main _git __git_main; do
-  if declare -f "$_gfn" &>/dev/null; then
-    complete -o bashdefault -o default -o nospace -F "$_gfn" g
-    break
+# bash-completion@2 lazy-loads completions via _comp_complete_load.
+# Trigger the git completion now so the real function is available for 'g'.
+_setup_git_alias_completion() {
+  local fn
+  fn=$(complete -p git 2>/dev/null | sed -n 's/.*-F \([^ ]*\).*/\1/p')
+
+  # Trigger lazy loader if needed
+  if [[ "$fn" == "_comp_complete_load" || "$fn" == "_completion_loader" ]]; then
+    COMP_LINE="git " COMP_POINT=4 COMP_WORDS=(git "") COMP_CWORD=1 \
+      "$fn" git "" git 2>/dev/null
+    COMPREPLY=()
+    fn=$(complete -p git 2>/dev/null | sed -n 's/.*-F \([^ ]*\).*/\1/p')
   fi
-done
-unset _gfn
+
+  # Use git's own __git_complete helper if available (most reliable)
+  if declare -f __git_complete &>/dev/null; then
+    __git_complete g __git_main 2>/dev/null || true
+    return
+  fi
+
+  # Fallback: copy the completion function to 'g'
+  for fn in __git_wrap__git_main __git_main _git; do
+    if declare -f "$fn" &>/dev/null; then
+      complete -o bashdefault -o default -o nospace -F "$fn" g
+      return
+    fi
+  done
+}
+_setup_git_alias_completion
+unset -f _setup_git_alias_completion
 
 # ── kubectl — cached completion ───────────────────────────────────────────────
 if command -v kubectl &>/dev/null; then
@@ -69,6 +92,21 @@ if command -v gum &>/dev/null && [[ "${BASH_VERSINFO[0]}" -ge 4 ]]; then
         COMP_WORDS=("${_cwords[@]}") COMP_CWORD="$_ccword" \
         "$_compfunc" "$cmd" "$cur" "$_cprev" 2>/dev/null
       _comps=("${COMPREPLY[@]}")
+      COMPREPLY=()
+
+      # bash-completion v2: lazy-loader may have replaced itself with the real
+      # function but left COMPREPLY empty — retry with the newly registered fn.
+      if [[ ${#_comps[@]} -eq 0 ]]; then
+        local _realfunc
+        _realfunc=$(complete -p -- "$cmd" 2>/dev/null | sed -n 's/.*-F \([^ ]*\).*/\1/p')
+        if [[ -n "$_realfunc" && "$_realfunc" != "$_compfunc" ]]; then
+          COMP_LINE="$line" COMP_POINT="${#line}" \
+            COMP_WORDS=("${_cwords[@]}") COMP_CWORD="$_ccword" \
+            "$_realfunc" "$cmd" "$cur" "$_cprev" 2>/dev/null
+          _comps=("${COMPREPLY[@]}")
+          COMPREPLY=()
+        fi
+      fi
     fi
 
     if [[ ${#_comps[@]} -eq 1 ]]; then

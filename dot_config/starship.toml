@@ -18,7 +18,6 @@ $rust\
 $kubernetes\
 $aws\
 $cmd_duration\
-$line_break\
 $character"""
 
 # ── Prompt character ──────────────────────────────────────────────────────────
@@ -35,12 +34,6 @@ truncate_to_repo  = true
 read_only         = ' 󰌾'
 read_only_style   = '#f38ba8'
 format            = '[$path]($style)[$read_only]($read_only_style) '
-
-[directory.substitutions]
-"Documents" = "󰈙"
-"Downloads" = " "
-"Desktop"   = "󰇄"
-"~"         = "󱂵"
 
 # ── Git ───────────────────────────────────────────────────────────────────────
 [git_branch]
