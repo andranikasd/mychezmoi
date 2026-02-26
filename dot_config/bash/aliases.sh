@@ -21,8 +21,10 @@ else
 fi
 
 # ── bat ───────────────────────────────────────────────────────────────────────
+# `cat` is left as the standard cat. Use `b` for syntax-highlighted output,
+# or `bat` directly. bat is still used by fzf previews and MANPAGER.
 if command -v bat &>/dev/null; then
-  alias cat='bat --paging=never'
+  alias b='bat'
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 fi
 

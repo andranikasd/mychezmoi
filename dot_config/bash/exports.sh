@@ -24,3 +24,6 @@ export PATH="/opt/homebrew/opt/icu4c@78/sbin:$PATH"
 # ── Compiler flags ────────────────────────────────────────────────────────────
 export LDFLAGS="-L/opt/homebrew/lib"
 export CPPFLAGS="-I/opt/homebrew/include"
+
+# ── Tool config paths ─────────────────────────────────────────────────────────
+export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# ─────────────────────────────────────────────────────────────────────────────
+#  run_onchange_after_bat-theme.sh — install catppuccin mocha theme for bat
+#  Re-runs whenever this file changes (checksum: {{ include "dot_config/bat/config" | sha256sum }})
+# ─────────────────────────────────────────────────────────────────────────────
+set -euo pipefail
+
+command -v bat &>/dev/null || { echo "bat not installed — skipping theme setup"; exit 0; }
+
+mkdir -p "$HOME/.config/bat/themes"
+
+curl -fsSL \
+  "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Mocha.tmTheme" \
+  -o "$HOME/.config/bat/themes/Catppuccin Mocha.tmTheme"
+
+bat cache --build
+
+printf '\033[0;32m✓ bat catppuccin-mocha theme installed\033[0m\n'

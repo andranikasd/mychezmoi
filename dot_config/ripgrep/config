@@ -1,0 +1,29 @@
+# ── ripgrep config ────────────────────────────────────────────────────────────
+#  Referenced by RIPGREP_CONFIG_PATH in exports.sh
+
+# Case: smart-case (case-insensitive unless pattern has uppercase)
+--smart-case
+
+# Follow symbolic links
+--follow
+
+# Truncate very long lines in output (prevents terminal flooding)
+--max-columns=150
+--max-columns-preview
+
+# Always use color (handled by bat/delta downstream; safe for piping too)
+--color=auto
+
+# Global ignores (on top of .gitignore / .ignore files)
+--glob=!.git
+--glob=!.hg
+--glob=!node_modules
+--glob=!.yarn
+--glob=!*.lock
+--glob=!package-lock.json
+--glob=!yarn.lock
+--glob=!pnpm-lock.yaml
+--glob=!dist
+--glob=!build
+--glob=!__pycache__
+--glob=!*.pyc

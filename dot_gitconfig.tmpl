@@ -6,9 +6,13 @@
 	path = ~/.gitconfig.local
 
 [core]
+	editor      = nvim
 	autocrlf    = input
 	pager       = delta
 	excludesfile = ~/.config/git/ignore
+
+[commit]
+	template = ~/.config/git/commit-template
 
 [init]
 	defaultBranch = main

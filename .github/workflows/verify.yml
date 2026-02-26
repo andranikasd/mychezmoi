@@ -5,15 +5,15 @@ on:
   pull_request:
 
 jobs:
-  # ── ShellCheck 
+  # ── ShellCheck ──────────────────────────────────────────────────────────────
   shellcheck:
     name: ShellCheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: ShellCheck bash config modules
-        uses: ludeeus/action-shellcheck@2.0.0
+        uses: ludeeus/action-shellcheck@00cae500b08a931fb5698e11e79bfbd38e612a38 # 2.0.0
         with:
           scandir: './dot_config/bash'
           severity: warning
@@ -21,17 +21,20 @@ jobs:
 
       - name: Check run-script syntax (strip templates, validate bash)
         run: |
-          for f in run_once_before_install.sh.tmpl run_onchange_after_Brewfile.sh.tmpl; do
+          for f in run_once_before_install.sh.tmpl \
+                   run_onchange_after_Brewfile.sh.tmpl \
+                   run_onchange_after_bat-theme.sh.tmpl; do
             echo "→ $f"
             sed 's/{{[^}]*}}//g' "$f" | bash -n
             echo "  ✓ syntax OK"
           done
 
+  # ── Chezmoi template rendering ──────────────────────────────────────────────
   chezmoi:
     name: Template validation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Install chezmoi
         run: |
@@ -52,12 +55,14 @@ jobs:
           render dot_gitconfig.tmpl
           render run_once_before_install.sh.tmpl
           render run_onchange_after_Brewfile.sh.tmpl
+          render run_onchange_after_bat-theme.sh.tmpl
 
+  # ── Structure checks ─────────────────────────────────────────────────────────
   structure:
     name: Source-dir structure
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Required files exist
         run: |
@@ -76,6 +81,12 @@ jobs:
           check dot_config/bash/completion.sh
           check dot_config/bash/prompt.sh
           check dot_config/git/ignore
+          check dot_config/git/commit-template
           check dot_config/tmux/tmux.conf
+          check dot_config/starship.toml
+          check dot_config/bat/config
+          check dot_config/ripgrep/config
+          check dot_config/nvim/init.lua
           check run_once_before_install.sh.tmpl
           check run_onchange_after_Brewfile.sh.tmpl
+          check run_onchange_after_bat-theme.sh.tmpl

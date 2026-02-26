@@ -1,0 +1,16 @@
+# ── bat config ────────────────────────────────────────────────────────────────
+#  bat is NOT aliased to cat — use `bat` or `b` for syntax-highlighted output.
+#  This config applies whenever bat is called directly or via fzf previews.
+
+--theme="Catppuccin Mocha"
+--style=numbers,changes,header-filename
+--italic-text=always
+--tabs=2
+--pager=less
+
+# Syntax mappings for files without extensions / ambiguous extensions
+--map-syntax=*.conf:INI
+--map-syntax=*.env:DotEnv
+--map-syntax=Brewfile:Ruby
+--map-syntax=*.tmpl:Bash
+--map-syntax=*ignore:GitIgnore

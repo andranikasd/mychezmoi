@@ -1,0 +1,18 @@
+# <type>(<scope>): <subject>
+#
+# Types  : feat · fix · docs · style · refactor · test · chore · ci · perf · revert
+# Scope  : optional — component or area affected (auth, api, ui, db, …)
+# Subject: imperative mood · lowercase · no trailing period · ≤ 72 chars
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# Body (optional — explain *what* and *why*, not *how*; wrap at 72 chars):
+#
+#
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# Footer (optional):
+#
+# Breaking change : BREAKING CHANGE: <description>
+# Close issue     : Closes #<number>
+# Co-author       : Co-authored-by: Name <email>
+#
