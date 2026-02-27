@@ -7,12 +7,12 @@ alias -- -='cd -'
 
 # ── ls / eza ──────────────────────────────────────────────────────────────────
 if command -v eza &>/dev/null; then
-  alias ls='eza --icons --group-directories-first'
-  alias l='eza -l --icons --git --group-directories-first'
-  alias ll='eza -la --icons --git --group-directories-first'
-  alias la='eza -a --icons --group-directories-first'
-  alias lt='eza --tree --icons --level=3 --group-directories-first'
-  alias llt='eza --tree --icons --level=3 -la --git'
+  alias ls='eza --group-directories-first'
+  alias l='eza -l --git --group-directories-first'
+  alias ll='eza -la --git --group-directories-first'
+  alias la='eza -a --group-directories-first'
+  alias lt='eza --tree --level=3 --group-directories-first'
+  alias llt='eza --tree --level=3 -la --git'
 else
   alias ls='ls -G'
   alias l='ls -lhF'

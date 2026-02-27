@@ -8,7 +8,6 @@ brew "bash"                # bash 5 (macOS ships 3.2)
 brew "bash-completion@2"  # programmable tab completion (required for git, kubectl, etc.)
 brew "tmux"
 brew "starship"       # prompt
-brew "gum"            # interactive shell UI (tab completion)
 brew "carapace"       # shell completions with descriptions (500+ commands)
 brew "direnv"         # per-directory env vars
 brew "zoxide"         # smart cd
@@ -59,9 +58,8 @@ brew "dos2unix"
 brew "cowsay"
 
 # ── Fonts ─────────────────────────────────────────────────────────────────────
-cask "font-jetbrains-mono-nerd-font"
-
 # ── Apps ──────────────────────────────────────────────────────────────────────
 # Note: install manually on a new Mac to avoid sudo prompts during bootstrap
 # cask "iterm2"
 # cask "visual-studio-code"
+cask "wezterm"

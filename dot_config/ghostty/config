@@ -27,7 +27,7 @@ palette = 14=#89dceb
 palette = 15=#a6adc8
 
 # ── Font ──────────────────────────────────────────────────────────────────────
-font-family          = JetBrains Mono Nerd Font
+font-family          = Menlo
 font-size            = 14
 
 # ── Terminal ──────────────────────────────────────────────────────────────────

@@ -3,7 +3,7 @@ if command -v fzf &>/dev/null; then
   eval "$(fzf --bash)"
   export FZF_DEFAULT_OPTS="
     --height=50% --layout=reverse --border=rounded --info=inline --cycle
-    --prompt='  ' --pointer='▶' --marker='✓'
+    --prompt='> ' --pointer='>' --marker='*'
     --color=fg:#cdd6f4,bg:#1e1e2e,hl:#89b4fa
     --color=fg+:#cdd6f4,bg+:#313244,hl+:#89b4fa
     --color=info:#a6e3a1,prompt:#cba6f7,pointer:#f38ba8
