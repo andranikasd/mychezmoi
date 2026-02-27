@@ -166,21 +166,35 @@ if command -v gum &>/dev/null && [[ "${BASH_VERSINFO[0]}" -ge 4 ]]; then
       fi
 
     else
-      # No completion function results — fd-based file/dir picker
-      case "$cmd" in
-        cd|pushd|rmdir)
-          selected=$(fd --type d --hidden --follow \
-            --exclude .git --exclude node_modules . 2>/dev/null \
-            | gum filter --value="$cur" --header="cd  directory" 2>/dev/null)
-          [[ -n "$selected" ]] && selected="${selected%/}/"
-          ;;
-        *)
-          selected=$(fd --hidden --follow --exclude .git . 2>/dev/null \
-            | gum filter --value="$cur" \
-                --header="  file / directory" 2>/dev/null)
-          [[ -n "$selected" && -d "$selected" ]] && selected="${selected%/}/"
-          ;;
-      esac
+      # No completion results — command name picker or fd-based file/dir picker
+      if [[ -z "$prefix" && -n "$cur" ]]; then
+        # Completing the first word: suggest commands from PATH
+        local -a _cmd_comps=()
+        mapfile -t _cmd_comps < <(compgen -c "$cur" | sort -u)
+        if [[ ${#_cmd_comps[@]} -eq 1 ]]; then
+          selected="${_cmd_comps[0]} "
+        elif [[ ${#_cmd_comps[@]} -gt 1 ]]; then
+          selected=$(printf '%s\n' "${_cmd_comps[@]}" \
+            | gum filter --value="$cur" --header="  command" 2>/dev/null)
+          [[ -n "$selected" ]] && selected="${selected} "
+        fi
+      else
+        # fd-based file/dir picker
+        case "$cmd" in
+          cd|pushd|rmdir)
+            selected=$(fd --type d --hidden --follow \
+              --exclude .git --exclude node_modules . 2>/dev/null \
+              | gum filter --value="$cur" --header="cd  directory" 2>/dev/null)
+            [[ -n "$selected" ]] && selected="${selected%/}/"
+            ;;
+          *)
+            selected=$(fd --hidden --follow --exclude .git . 2>/dev/null \
+              | gum filter --value="$cur" \
+                  --header="  file / directory" 2>/dev/null)
+            [[ -n "$selected" && -d "$selected" ]] && selected="${selected%/}/"
+            ;;
+        esac
+      fi
     fi
 
     # ── 4. Restore terminal state ─────────────────────────────────────────────
