@@ -1,0 +1,48 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  ~/.config/ghostty/config
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Colors — pure black bg + catppuccin mocha palette ─────────────────────────
+background           = #000000
+foreground           = #cdd6f4
+cursor-color         = #cba6f7
+selection-background = #313244
+
+# 16-color palette (catppuccin mocha)
+palette = 0=#45475a
+palette = 1=#f38ba8
+palette = 2=#a6e3a1
+palette = 3=#f9e2af
+palette = 4=#89b4fa
+palette = 5=#cba6f7
+palette = 6=#89dceb
+palette = 7=#bac2de
+palette = 8=#585b70
+palette = 9=#f38ba8
+palette = 10=#a6e3a1
+palette = 11=#f9e2af
+palette = 12=#89b4fa
+palette = 13=#cba6f7
+palette = 14=#89dceb
+palette = 15=#a6adc8
+
+# ── Font ──────────────────────────────────────────────────────────────────────
+font-family          = JetBrains Mono Nerd Font
+font-size            = 14
+
+# ── Terminal ──────────────────────────────────────────────────────────────────
+term                 = xterm-256color
+shell-integration    = detect
+
+# ── Window ────────────────────────────────────────────────────────────────────
+window-padding-x     = 6
+window-padding-y     = 6
+macos-titlebar-style = hidden
+
+# ── Cursor ────────────────────────────────────────────────────────────────────
+cursor-style         = bar
+cursor-style-blink   = true
+
+# ── Behavior ──────────────────────────────────────────────────────────────────
+macos-option-as-alt  = true
+copy-on-select       = false

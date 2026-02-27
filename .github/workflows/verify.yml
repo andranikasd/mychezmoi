@@ -87,6 +87,7 @@ jobs:
           check dot_config/bat/config
           check dot_config/ripgrep/config
           check dot_config/nvim/init.lua
+          check dot_config/ghostty/config
           check run_once_before_install.sh.tmpl
           check run_onchange_after_Brewfile.sh.tmpl
           check run_onchange_after_bat-theme.sh.tmpl

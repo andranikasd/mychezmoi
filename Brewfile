@@ -9,6 +9,7 @@ brew "bash-completion@2"  # programmable tab completion (required for git, kubec
 brew "tmux"
 brew "starship"       # prompt
 brew "gum"            # interactive shell UI (tab completion)
+brew "carapace"       # shell completions with descriptions (500+ commands)
 brew "direnv"         # per-directory env vars
 brew "zoxide"         # smart cd
 brew "thefuck"        # command correction
