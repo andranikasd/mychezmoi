@@ -46,18 +46,16 @@ _setup_git_alias_completion
 unset -f _setup_git_alias_completion
 
 # ── kubectl — cached completion ───────────────────────────────────────────────
+# Cached: regenerated only when kubectl binary changes (uses mtime, not version)
 if command -v kubectl &>/dev/null; then
   _kc="$HOME/.cache/kubectl_completion.bash"
-  _kv="$HOME/.cache/kubectl_completion.version"
-  _kver=$(kubectl version --client 2>/dev/null | head -1)
-  if [[ ! -f "$_kc" || "$(< "$_kv" 2>/dev/null)" != "$_kver" ]]; then
+  if [[ ! -s "$_kc" || "$(command -v kubectl)" -nt "$_kc" ]]; then
     mkdir -p "$HOME/.cache"
-    kubectl completion bash > "$_kc" 2>/dev/null
-    printf '%s\n' "$_kver" > "$_kv"
+    kubectl completion bash > "$_kc" 2>/dev/null || rm -f "$_kc"
   fi
-  [[ -f "$_kc" ]] && source "$_kc"
+  [[ -s "$_kc" ]] && source "$_kc"
   complete -o default -F __start_kubectl k
-  unset _kc _kv _kver
+  unset _kc
 fi
 
 # ── asdf ──────────────────────────────────────────────────────────────────────

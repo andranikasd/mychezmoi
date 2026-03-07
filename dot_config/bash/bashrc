@@ -14,6 +14,7 @@ shopt -s histappend cmdhist
 PROMPT_COMMAND='history -a'
 
 _prune_old_history() {
+  mkdir -p "$HOME/.cache"
   local stamp="$HOME/.cache/bash_history_pruned"
   local today; today=$(date +%Y-%m-%d)
   [[ -f "$stamp" && "$(< "$stamp")" == "$today" ]] && return
@@ -32,7 +33,6 @@ _prune_old_history() {
   done < "$histfile"
   mv "$tmpfile" "$histfile"
   history -c; history -r
-  mkdir -p "$HOME/.cache"
   printf '%s\n' "$today" > "$stamp"
 }
 _prune_old_history
@@ -54,8 +54,7 @@ bind '"\e[1;5D": backward-word'
 
 # ── Load modules ──────────────────────────────────────────────────────────────
 _BASH_D="$HOME/.config/bash"
-source "$_BASH_D/exports.sh"
-source "$_BASH_D/aliases.sh"
-source "$_BASH_D/functions.sh"
-source "$_BASH_D/completion.sh"
-source "$_BASH_D/prompt.sh"
+for _mod in exports aliases functions completion prompt; do
+  [[ -f "$_BASH_D/$_mod.sh" ]] && source "$_BASH_D/$_mod.sh"
+done
+unset _mod _BASH_D

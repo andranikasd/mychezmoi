@@ -16,9 +16,9 @@ export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="/opt/homebrew/opt/node@20/bin:$PATH"
+export PATH="/opt/homebrew/opt/node@20/bin:$PATH"  # pinned: update when upgrading Node
 export PATH="/opt/homebrew/opt/sqlite/bin:$PATH"
-export PATH="/opt/homebrew/opt/icu4c@78/bin:$PATH"
+export PATH="/opt/homebrew/opt/icu4c@78/bin:$PATH"  # pinned: required by Ruby/Python native gems
 export PATH="/opt/homebrew/opt/icu4c@78/sbin:$PATH"
 
 # ── Compiler flags ────────────────────────────────────────────────────────────
@@ -27,3 +27,8 @@ export CPPFLAGS="-I/opt/homebrew/include"
 
 # ── Tool config paths ─────────────────────────────────────────────────────────
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
+
+# ── bat ───────────────────────────────────────────────────────────────────────
+if command -v bat &>/dev/null; then
+  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+fi

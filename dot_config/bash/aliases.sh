@@ -25,7 +25,6 @@ fi
 # or `bat` directly. bat is still used by fzf previews and MANPAGER.
 if command -v bat &>/dev/null; then
   alias b='bat'
-  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 fi
 
 # ── Git ───────────────────────────────────────────────────────────────────────
@@ -77,7 +76,7 @@ alias copy='pbcopy'
 alias paste='pbpaste'
 alias o='open'
 alias oo='open .'
-alias reload='exec bash'
+alias reload='exec -l bash'
 alias path='echo "$PATH" | tr ":" "\n"'
 alias vi='nvim'
 alias vim='nvim'

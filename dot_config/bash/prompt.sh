@@ -25,8 +25,5 @@ if command -v direnv &>/dev/null; then eval "$(direnv hook bash)"; fi
 # ── zoxide ────────────────────────────────────────────────────────────────────
 if command -v zoxide &>/dev/null; then eval "$(zoxide init bash)"; fi
 
-# ── delta (git pager) ─────────────────────────────────────────────────────────
-if command -v delta &>/dev/null; then export GIT_PAGER='delta'; fi
-
 # ── Starship prompt ───────────────────────────────────────────────────────────
 if command -v starship &>/dev/null; then eval "$(starship init bash)"; fi

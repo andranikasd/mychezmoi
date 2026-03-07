@@ -53,17 +53,21 @@ fkill() {
 
 # Fuzzy stage files
 gadd() {
-  git status -s | fzf -m --ansi \
-    --header='Space to select, Enter to add' \
-    --preview 'git diff --color=always {2}' \
-    | awk '{print $2}' | xargs git add && git status -sb
+  local -a files
+  mapfile -t files < <(
+    git status -s | fzf -m --ansi \
+      --header='Space to select, Enter to add' \
+      --preview 'git diff --color=always -- {2}' \
+      | awk '{print substr($0, 4)}'
+  )
+  [[ ${#files[@]} -gt 0 ]] && git add -- "${files[@]}" && git status -sb
 }
 
 # Fuzzy checkout branch
 gfco() {
   local branch
   branch=$(git branch -a | fzf --height=40% --reverse \
-    | sed 's/^[* ]*//' | sed 's|remotes/[^/]*/||')
+    | sed 's/^[* ]*//; s|remotes/[^/]*/||')
   [[ -n "$branch" ]] && git checkout "$branch"
 }
 
@@ -79,4 +83,6 @@ ssht() { TERM=xterm-256color command ssh -t "$@" -- 'tmux new-session -A -s main
 # ── Misc ──────────────────────────────────────────────────────────────────────
 
 # thefuck — lazy load so Python startup doesn't slow shell init
-fuck() { eval "$(thefuck --alias 2>/dev/null)"; fuck "$@"; }
+if command -v thefuck &>/dev/null; then
+  fuck() { eval "$(thefuck --alias)"; fuck "$@"; }
+fi

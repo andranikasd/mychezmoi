@@ -34,7 +34,7 @@
 
 # ── Merge / diff ──────────────────────────────────────────────────────────────
 [merge]
-	conflictstyle = diff3
+	conflictstyle = zdiff3
 
 [diff]
 	colorMoved = default
@@ -43,6 +43,10 @@
 # ── rerere: remember conflict resolutions ─────────────────────────────────────
 [rerere]
 	enabled = true
+
+# ── Help ──────────────────────────────────────────────────────────────────────
+[help]
+	autocorrect = prompt
 
 # ── Branch & tag display ──────────────────────────────────────────────────────
 [branch]
@@ -59,7 +63,7 @@
 	navigate        = true
 	side-by-side    = true
 	line-numbers    = true
-	syntax-theme    = base16-256
+	syntax-theme    = Catppuccin Mocha
 	file-style      = bold yellow ul
 	hunk-header-style = file line-number syntax
 
@@ -104,4 +108,4 @@
 	sl  = stash list
 
 	# Cleanup: delete branches whose upstream is gone
-	gone = "!git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | xargs -r git branch -D"
+	gone = "!git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | grep . | xargs git branch -D"
